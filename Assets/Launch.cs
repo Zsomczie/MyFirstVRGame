@@ -17,6 +17,6 @@ public class Launch : MonoBehaviour
     }
     public void LaunchBall() 
     {
-        transform.position = new Vector3(0, 0, 0);
+        gameObject.AddComponent<BulletMove>();
     }
 }

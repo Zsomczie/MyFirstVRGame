@@ -13,6 +13,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Tp",
+                    "type": "Button",
+                    "id": "7049e8d0-57f3-4cce-85d1-626efd3d9de2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.5)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SummonCube",
+                    "type": "Button",
+                    "id": "13a0f9c7-b714-4ecd-9512-762db3464da9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -24,6 +42,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7d036a5-23b6-4eb9-b56b-9334d095bc1b",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "72d5fe80-10da-4d71-baaf-1a3944dab855",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SummonCube",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
