@@ -9,15 +9,16 @@ public class CubeInteraction : MonoBehaviour
     public InputActionProperty velocityProperty;
     [SerializeField] Quaternion rotation;
     [SerializeField] int rotationBool;
+    ScoreManager scoreMan;
     //public Vector3 lol;
     // Start is called before the first frame update
     void Start()
     {
-
+        scoreMan = GameObject.Find("ScoreManager").GetComponent<ScoreManager>(); //using this to modify score later
         rotation = this.transform.rotation;
         sword = GameObject.FindObjectsOfType<FindMe>(true).Select(x=>x.gameObject).Where(x=>x.gameObject.name.Contains("Sword")).First();
         hammer = GameObject.FindObjectsOfType<FindMe>(true).Select(x => x.gameObject).Where(x => x.gameObject.name.Contains("Hammer")).First();
-        if (gameObject.name.Contains("Sword"))
+        if (gameObject.name.Contains("Sword")) //is it a sword cube, or a hammer cube?
         {
             IsSword = true;
         }
@@ -49,72 +50,112 @@ public class CubeInteraction : MonoBehaviour
     {
         //lol=velocityProperty.action.ReadValue<Vector3>();
         // Debug.Log(lol); // up +y down -y left -x right +x
-        
-
-
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.transform.parent.gameObject==sword&&IsSword)
+        if (other.gameObject.transform.parent.gameObject==sword&&IsSword) //if the used weapon is correct 
         {
-            if (velocityProperty.action.ReadValue<Vector3>().x>-0.05&&rotationBool==0)
+            if (velocityProperty.action.ReadValue<Vector3>().x>-0.05&&rotationBool==0) //reading the value of the velocity input //right 
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100*scoreMan.multiplier; //increasing score depending on combo
+                if (scoreMan.multiplier<8) //multiplier can't be more than 8
+                {
+                    scoreMan.multiplier += 1;
+                }
+                
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().x < 0.05 && rotationBool == 2)
+            else if (velocityProperty.action.ReadValue<Vector3>().x < 0.05 && rotationBool == 2) //left
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier; 
+                if (scoreMan.multiplier < 8) 
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().y > -0.05 && rotationBool == 1)
+            else if (velocityProperty.action.ReadValue<Vector3>().y > -0.05 && rotationBool == 1) //up
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier;
+                if (scoreMan.multiplier < 8)
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().y < 0.05 && rotationBool == 3)
+            else if (velocityProperty.action.ReadValue<Vector3>().y < 0.05 && rotationBool == 3) //down
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier;
+                if (scoreMan.multiplier < 8)
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else
+            else //wrong direction
             {
                 Debug.Log("bedge");
+                scoreMan.multiplier =1;
                 Destroy(this.gameObject);
             }
 
-            //right direction
         }
         else if(other.gameObject.transform.parent.gameObject == hammer&&!IsSword)
         {
-            if (velocityProperty.action.ReadValue<Vector3>().x > -0.05 && rotationBool == 0)
+            if (velocityProperty.action.ReadValue<Vector3>().x > -0.05 && rotationBool == 0) //right
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier;
+                if (scoreMan.multiplier < 8)
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().x < 0.05 && rotationBool == 2)
+            else if (velocityProperty.action.ReadValue<Vector3>().x < 0.05 && rotationBool == 2) //left
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier; 
+                if (scoreMan.multiplier < 8) 
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().y > -0.05 && rotationBool == 1)
+            else if (velocityProperty.action.ReadValue<Vector3>().y > -0.05 && rotationBool == 1) //up
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier;
+                if (scoreMan.multiplier < 8)
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
-            else if (velocityProperty.action.ReadValue<Vector3>().y < 0.05 && rotationBool == 3)
+            else if (velocityProperty.action.ReadValue<Vector3>().y < 0.05 && rotationBool == 3) //down
             {
                 Debug.Log("goodge");
+                scoreMan.score += 100 * scoreMan.multiplier;
+                if (scoreMan.multiplier < 8)
+                {
+                    scoreMan.multiplier += 1;
+                }
                 Destroy(this.gameObject);
             }
             else
             {
                 Debug.Log("bedge");
+                scoreMan.multiplier =1;
                 Destroy(this.gameObject);
             }
         }
         else
         {
+            scoreMan.multiplier = 1;
             Destroy(this.gameObject);
         }
     }
