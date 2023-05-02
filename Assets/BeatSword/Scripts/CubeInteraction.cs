@@ -151,7 +151,7 @@ public class CubeInteraction : MonoBehaviour
             }
 
         }
-        else if(other.gameObject.transform.parent.gameObject == hammer&&!IsSword)
+        else if(other.gameObject.transform.parent.gameObject == hammer&&!IsSword&&!IsGun)
         {
             if (velocityProperty.action.ReadValue<Vector3>().x < 0.015 && velocityProperty.action.ReadValue<Vector3>().x > -0.015)
             {
