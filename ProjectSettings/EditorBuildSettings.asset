@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/BeatSword/Scenes/Main Menu.unity
+    guid: 8d5d2431adfe3df4c8f1dbd3ee09e056
+  - enabled: 1
+    path: Assets/BeatSword/Scenes/Beat sword.unity
+    guid: 6c5f38f6609243342b03da5d05d4d129
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f5cf76ee0f6c2af4089c17612158fa73, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 64794a77f684ef840837b8e7ebf729bc, type: 2}

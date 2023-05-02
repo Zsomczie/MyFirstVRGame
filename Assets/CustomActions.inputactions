@@ -76,6 +76,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "BeatMenu",
+                    "type": "Button",
+                    "id": "fc877368-0876-47e1-8ea8-052842e37cd0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwitchGun",
+                    "type": "Button",
+                    "id": "b0b590b4-963e-49b2-aa49-87609bfbd30a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "00b071d8-34d9-49ab-aadf-6bc3fb0f06aa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -164,6 +191,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Velocity",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd4dfac3-8606-4fc5-825f-6f0fbb2918d0",
+                    "path": "<OculusTouchController>{LeftHand}/thumbstickClicked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BeatMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a318d5f-1dd0-473b-87e7-b7efeab66c7a",
+                    "path": "<XRController>{RightHand}/gripButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchGun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4577a9bc-6118-4265-b6d7-bffcb26f8bc1",
+                    "path": "<OculusTouchController>{RightHand}/triggerPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

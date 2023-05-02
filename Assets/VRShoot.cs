@@ -24,7 +24,7 @@ public class VRShoot : MonoBehaviour
         gunRotation = gun.transform.rotation;
         
     }
-    public void Shoot() 
+    public void OnShoot() 
     {
 
         Instantiate(bullet, new Vector3(End.transform.position.x, End.transform.position.y, End.transform.position.z), RHRotation);

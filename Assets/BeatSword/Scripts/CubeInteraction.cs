@@ -4,13 +4,13 @@ using UnityEngine.InputSystem;
 
 public class CubeInteraction : MonoBehaviour
 {
-    [SerializeField] GameObject sword, hammer;
-    [SerializeField] bool IsSword;
+    [SerializeField] GameObject sword, hammer, gun;
+    [SerializeField] bool IsSword, IsGun;
     public InputActionProperty velocityProperty;
     [SerializeField] Quaternion rotation;
     [SerializeField] int rotationBool;
     ScoreManager scoreMan;
-    //public Vector3 lol;
+    public Vector3 lol;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +18,20 @@ public class CubeInteraction : MonoBehaviour
         rotation = this.transform.rotation;
         sword = GameObject.FindObjectsOfType<FindMe>(true).Select(x=>x.gameObject).Where(x=>x.gameObject.name.Contains("Sword")).First();
         hammer = GameObject.FindObjectsOfType<FindMe>(true).Select(x => x.gameObject).Where(x => x.gameObject.name.Contains("Hammer")).First();
+        gun = GameObject.FindObjectsOfType<FindMe>(true).Select(x => x.gameObject).Where(x => x.gameObject.name.Contains("Gun")).First();
         if (gameObject.name.Contains("Sword")) //is it a sword cube, or a hammer cube?
         {
             IsSword = true;
+            IsGun = false;
+        }
+        else if(gameObject.name.Contains("Gun"))
+        {
+            IsGun = true;
+            IsSword = false;
         }
         else
         {
+            IsGun = false;
             IsSword = false;
         }
         if (rotation.eulerAngles.z == 0)
@@ -48,14 +56,52 @@ public class CubeInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //lol=velocityProperty.action.ReadValue<Vector3>();
-        // Debug.Log(lol); // up +y down -y left -x right +x
+        lol = velocityProperty.action.ReadValue<Vector3>();
+        //Debug.Log(lol); // up +y down -y left -x right +x
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.transform.parent.gameObject==sword&&IsSword) //if the used weapon is correct 
+        if (other.gameObject.name.Contains("Bullet") && IsGun || other.gameObject.name.Contains("Gun") && IsGun)
         {
-            if (velocityProperty.action.ReadValue<Vector3>().x>-0.05&&rotationBool==0) //reading the value of the velocity input //right 
+            if (other.gameObject.name.Contains("Gun"))
+            {
+                scoreMan.score += 100 * scoreMan.multiplier; //increasing score depending on combo
+                if (scoreMan.multiplier < 8) //multiplier can't be more than 8
+                {
+                    scoreMan.multiplier += 1;
+                }
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                scoreMan.score += 100 * scoreMan.multiplier; //increasing score depending on combo
+                if (scoreMan.multiplier < 8) //multiplier can't be more than 8
+                {
+                    scoreMan.multiplier += 1;
+                }
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+            }
+            
+
+        }
+        else if (other.gameObject.name.Contains("Bullet") && !IsGun)
+        {
+            scoreMan.multiplier = 1;
+            scoreMan.fails++;
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+        else if (other.gameObject.transform.parent.gameObject==sword&&IsSword) //if the used weapon is correct 
+        {
+            if (velocityProperty.action.ReadValue<Vector3>().x < 0.015&& velocityProperty.action.ReadValue<Vector3>().x > -0.015)
+            {
+                Debug.Log("bedge");
+                scoreMan.multiplier = 1;
+                scoreMan.fails++;
+                Destroy(this.gameObject);
+            }
+            else if (velocityProperty.action.ReadValue<Vector3>().x>-0.05&&rotationBool==0) //reading the value of the velocity input //right 
             {
                 Debug.Log("goodge");
                 scoreMan.score += 100*scoreMan.multiplier; //increasing score depending on combo
@@ -100,13 +146,21 @@ public class CubeInteraction : MonoBehaviour
             {
                 Debug.Log("bedge");
                 scoreMan.multiplier =1;
+                scoreMan.fails++;
                 Destroy(this.gameObject);
             }
 
         }
         else if(other.gameObject.transform.parent.gameObject == hammer&&!IsSword)
         {
-            if (velocityProperty.action.ReadValue<Vector3>().x > -0.05 && rotationBool == 0) //right
+            if (velocityProperty.action.ReadValue<Vector3>().x < 0.015 && velocityProperty.action.ReadValue<Vector3>().x > -0.015)
+            {
+                Debug.Log("bedge");
+                scoreMan.multiplier = 1;
+                scoreMan.fails++;
+                Destroy(this.gameObject);
+            }
+            else if (velocityProperty.action.ReadValue<Vector3>().x > -0.05 && rotationBool == 0) //right
             {
                 Debug.Log("goodge");
                 scoreMan.score += 100 * scoreMan.multiplier;
@@ -150,12 +204,14 @@ public class CubeInteraction : MonoBehaviour
             {
                 Debug.Log("bedge");
                 scoreMan.multiplier =1;
+                scoreMan.fails++;
                 Destroy(this.gameObject);
             }
         }
         else
         {
             scoreMan.multiplier = 1;
+            scoreMan.fails++;
             Destroy(this.gameObject);
         }
     }
