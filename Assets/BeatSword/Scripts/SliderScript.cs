@@ -12,8 +12,9 @@ public class SliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        spawner = GameObject.Find("CubeSpawner").GetComponent<CubeSpawner>();
+        //getting spawner gameobject
+        spawner = GameObject.Find("CubeSpawner").GetComponent<CubeSpawner>(); 
+        //changign value of slider to match the starting spawnrate
         slider.value = spawner.spawnRate;
     }
 
@@ -21,6 +22,8 @@ public class SliderScript : MonoBehaviour
     void Update()
     {
         //slider.onValueChanged.AddListener((v) => { SliderValue.text = v.ToString("0.00"); });
+
+        //changing the text and the spawnrate to match the slider's value
         SliderValue.text = slider.value.ToString("0.00");
         spawner.spawnRate = slider.value;
     }
