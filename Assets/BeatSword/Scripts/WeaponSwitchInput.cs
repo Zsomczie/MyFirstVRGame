@@ -10,20 +10,23 @@ public class WeaponSwitchInput : MonoBehaviour
 {
     public GameObject sword, hammer, gun;
     public GameObject LastActive, rightHandController, leftHandController, PauseMenu, hammerCube, swordCube, gunCube;
-    public Vector3 velocity;
     [SerializeField] InputActionProperty velocityProperty;
-
+    [SerializeField] CubeSpawner spawner;
     // Start is called before the first frame update
     void Start()
     {
+        //just making sure time is always started when the scene starts
         Time.timeScale = 1;
+        //finding spawner for possible value change in the pause menu
+        spawner = GameObject.Find("CubeSpawner").GetComponent<CubeSpawner>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //velocity = velocityProperty.action.ReadValue<Vector3>();
+        //Debug.Log(velocityProperty.action.ReadValue<Vector3>());
     }
+    //switching between weapons
     public void OnSwitchSword()
     {
         sword.SetActive(true);
@@ -43,6 +46,7 @@ public class WeaponSwitchInput : MonoBehaviour
         sword.SetActive(false);
         hammer.SetActive(false);
     }
+    //developer tool: spawning different cubes with buttons
     public void OnSpawnHammerCube()
     {
 
@@ -52,6 +56,7 @@ public class WeaponSwitchInput : MonoBehaviour
     {
         Instantiate(swordCube, new Vector3(0, 0.5f, 24), generateRotation());
     }
+    //method to generate random rotation for the cubes
     public Quaternion generateRotation()
     {
         int cubeRotation = Random.Range(0, 4);
@@ -77,6 +82,7 @@ public class WeaponSwitchInput : MonoBehaviour
         }
 
     }
+    //when pause menu button is pressed
     public void OnBeatMenu()
     {
         if (Time.timeScale== 1 /*PauseMenu.activeSelf == false*/) //if this doesn't work, try disabling every cubes' movement script.
@@ -90,10 +96,12 @@ public class WeaponSwitchInput : MonoBehaviour
             //Spawner.enabled = false;
             
             PauseMenu.SetActive(true);
+            //adding all necessary componets to the hands
             rightHandController.AddComponent<XRRayInteractor>();
             rightHandController.AddComponent<XRInteractorLineVisual>();
             leftHandController.AddComponent<XRRayInteractor>();
             leftHandController.AddComponent<XRInteractorLineVisual>();
+            //setting lastactive variable to the correct weapon
             if (sword.activeSelf == true)
             {
                 LastActive = sword;
@@ -109,8 +117,12 @@ public class WeaponSwitchInput : MonoBehaviour
                 LastActive = gun;
                 gun.SetActive(false);
             }
+            //disabling spawner so value change counts
+            spawner.enabled = false;
+            //stopping time
             Time.timeScale = 0;
         }
+        //when the button is pressed, but menu is already open, close it
         else if (Time.timeScale==0/*PauseMenu.activeSelf == true*/)
         {
 
@@ -121,6 +133,8 @@ public class WeaponSwitchInput : MonoBehaviour
             //}
             //var Spawner = GameObject.FindObjectOfType<CubeSpawner>();
             //Spawner.enabled = true;
+
+            //remove all unnecessary components
             DestroyImmediate(rightHandController.GetComponent<XRRayInteractor>());
             DestroyImmediate(rightHandController.GetComponent<XRInteractorLineVisual>());
             DestroyImmediate(rightHandController.GetComponent<LineRenderer>());
@@ -130,6 +144,9 @@ public class WeaponSwitchInput : MonoBehaviour
             PauseMenu.SetActive(false);
             
             Time.timeScale = 1;
+            //re-enable the spawner so changes in the pause menu are applied
+            spawner.enabled = true;
+            //get last active weapon back
             LastActive.SetActive(true);
         }
     }

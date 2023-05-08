@@ -10,16 +10,20 @@ public class CubeInteraction : MonoBehaviour
     [SerializeField] Quaternion rotation;
     [SerializeField] int rotationBool;
     ScoreManager scoreMan;
-    public Vector3 lol;
+    //public Vector3 lol;
     // Start is called before the first frame update
     void Start()
     {
-        scoreMan = GameObject.Find("ScoreManager").GetComponent<ScoreManager>(); //using this to modify score later
+        //using this to modify score later
+        scoreMan = GameObject.Find("ScoreManager").GetComponent<ScoreManager>(); 
+        //getting rotation to check which way the cube is facing later
         rotation = this.transform.rotation;
+        //getting the 3 weapons
         sword = GameObject.FindObjectsOfType<FindMe>(true).Select(x=>x.gameObject).Where(x=>x.gameObject.name.Contains("Sword")).First();
         hammer = GameObject.FindObjectsOfType<FindMe>(true).Select(x => x.gameObject).Where(x => x.gameObject.name.Contains("Hammer")).First();
         gun = GameObject.FindObjectsOfType<FindMe>(true).Select(x => x.gameObject).Where(x => x.gameObject.name.Contains("Gun")).First();
-        if (gameObject.name.Contains("Sword")) //is it a sword cube, or a hammer cube?
+        //is it a sword cube, or a hammer cube?
+        if (gameObject.name.Contains("Sword")) 
         {
             IsSword = true;
             IsGun = false;
@@ -56,11 +60,12 @@ public class CubeInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lol = velocityProperty.action.ReadValue<Vector3>();
+        //lol = velocityProperty.action.ReadValue<Vector3>();
         //Debug.Log(lol); // up +y down -y left -x right +x
     }
     private void OnTriggerEnter(Collider other)
     {
+        //if a bullet or the gun hits the cube, and the cube is a gun cube, increase score
         if (other.gameObject.name.Contains("Bullet") && IsGun || other.gameObject.name.Contains("Gun") && IsGun)
         {
             if (other.gameObject.name.Contains("Gun"))
@@ -72,6 +77,7 @@ public class CubeInteraction : MonoBehaviour
                 }
                 Destroy(this.gameObject);
             }
+            //if it's a bullet, destroy the bullet as well
             else
             {
                 scoreMan.score += 100 * scoreMan.multiplier; //increasing score depending on combo
@@ -85,6 +91,7 @@ public class CubeInteraction : MonoBehaviour
             
 
         }
+        //if a bullet hits the cube but it's not a gun cube, it's a fail
         else if (other.gameObject.name.Contains("Bullet") && !IsGun)
         {
             scoreMan.multiplier = 1;
@@ -92,8 +99,10 @@ public class CubeInteraction : MonoBehaviour
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
+        //checking if sword cube is hit from right direction 
         else if (other.gameObject.transform.parent.gameObject==sword&&IsSword) //if the used weapon is correct 
         {
+            //if the weapon is right, but it's still
             if (velocityProperty.action.ReadValue<Vector3>().x < 0.015&& velocityProperty.action.ReadValue<Vector3>().x > -0.015)
             {
                 Debug.Log("bedge");
@@ -151,6 +160,7 @@ public class CubeInteraction : MonoBehaviour
             }
 
         }
+        //chechking the same for hammer
         else if(other.gameObject.transform.parent.gameObject == hammer&&!IsSword&&!IsGun)
         {
             if (velocityProperty.action.ReadValue<Vector3>().x < 0.015 && velocityProperty.action.ReadValue<Vector3>().x > -0.015)
@@ -208,6 +218,7 @@ public class CubeInteraction : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+        //if the wall hits the cube
         else
         {
             scoreMan.multiplier = 1;

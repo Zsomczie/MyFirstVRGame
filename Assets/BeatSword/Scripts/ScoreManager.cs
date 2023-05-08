@@ -23,16 +23,19 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //displaying all the necessary texts
         scoreText.text = "Score: "+ score.ToString();
         multiplierText.text = "Combo: " +multiplier.ToString() + "x";
         failsText.text = "Fails: " + fails.ToString();
-        if (fails==5&& !SwitchInput.rightHandController.GetComponent<XRRayInteractor>())
+        //if there are 5 fails, and this hasn't been triggered before
+        if (fails==5 && !SwitchInput.rightHandController.GetComponent<XRRayInteractor>())
         {
             dead.SetActive(true);
            SwitchInput.rightHandController.AddComponent<XRRayInteractor>();
             SwitchInput.rightHandController.AddComponent<XRInteractorLineVisual>();
             SwitchInput.leftHandController.AddComponent<XRRayInteractor>();
             SwitchInput.leftHandController.AddComponent<XRInteractorLineVisual>();
+            //turning off weapons and disabling time so controller buttons don't work anymore
             if (SwitchInput.sword.activeSelf == true)
             {
                 SwitchInput.sword.SetActive(false);

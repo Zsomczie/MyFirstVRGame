@@ -14,6 +14,7 @@ public class CubeMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //moving the cubes with a set speed
         transform.Translate(new Vector3(0,0,-speed)*Time.deltaTime);
     }
 }
